@@ -70,4 +70,5 @@ const renderContent = (contetn, element) => {
 
 const removeData = () => {
   countryListRef.innerHTML = '';
+  countryInfoRef.innerHTML = '';
 };
