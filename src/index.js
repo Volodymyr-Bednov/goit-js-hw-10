@@ -1,7 +1,7 @@
 import './css/styles.css';
 import { fetchCountries } from './js/fetchCountries.js';
 import debounce from 'lodash.debounce';
-import Notiflix from 'notiflix';
+//import Notiflix from 'notiflix';
 
 //
 
@@ -13,7 +13,7 @@ inputCountryName.addEventListener(
   debounce(evt => {
     const countryName = evt.target.value.trim();
     console.log(countryName, evt.target.value.length);
-    //Notiflix.info(`'Cogito ergo sum' - ${countryName}`);
+
     if (!countryName) return;
     fetchCountries(countryName);
   }, 300)
