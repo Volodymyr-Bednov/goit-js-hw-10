@@ -6,6 +6,7 @@ import Notiflix from 'notiflix';
 const DEBOUNCE_DELAY = 300;
 const inputCountryName = document.querySelector('input#search-box');
 const countryListRef = document.querySelector('ul.country-list');
+const countryInfoRef = document.querySelector('div.country-info');
 
 const getResult = elem => {
   const enteredValue = elem.value.trim();
@@ -15,7 +16,7 @@ const getResult = elem => {
   }
   fetchCountries(enteredValue)
     .then(data => {
-      createElements(data);
+      createContent(data);
     })
     .catch(error => {
       removeData();
@@ -30,34 +31,41 @@ inputCountryName.addEventListener(
   }, DEBOUNCE_DELAY)
 );
 
-const createElements = data => {
+const createContent = data => {
+  let content = '';
+  console.log(data.length);
   if (data.length > 10) {
     removeData();
     return Notiflix.Notify.info(
       `Too many matches found. Please enter a more specific name.`
     );
-  }
-  console.log(data.length);
-
-  const items = data
-    .map(({ name, capital, population, flags, languages }) => {
-      console.log(name.official, capital, population, flags.svg, languages);
-      return `
+  } else if ((data.length > 1) & (data.length <= 10)) {
+    content = data
+      .map(({ name, flags }) => {
+        return `
       <li>
         <img src="${flags.svg}" alt="${name.official}" style="width: 30px;" />
         <span>${name.official} </span>
+     </li>`;
+      })
+      .join(' ');
+    renderContent(content, countryListRef);
+  } else if (data.length == 1) {
+    console.log(data);
+    const [{ name, capital, population, flags, languages }] = data;
+    content = `
+    <img src="${flags.svg}" alt="${name.official}" style="width: 30px;" />
+        <span>${name.official}</span>
         <p>Сapital: ${capital} </p>
         <p>Population: ${population} </p>
-        <p>Languages: ${Object.values(languages).join(', ')} </p>
-     </li>`;
-    })
-    .join(' ');
-  renderContent(items);
+        <p>Languages: ${Object.values(languages).join(', ')}</p>`;
+    renderContent(content, countryInfoRef);
+  }
 };
 
-const renderContent = contetn => {
+const renderContent = (contetn, element) => {
   removeData();
-  countryListRef.insertAdjacentHTML('beforeend', contetn);
+  element.insertAdjacentHTML('beforeend', contetn);
 };
 
 const removeData = () => {
