@@ -43,9 +43,9 @@ const createContent = data => {
     content = data
       .map(({ name, flags }) => {
         return `
-      <li>
-        <img src="${flags.svg}" alt="${name.official}" style="width: 30px;" />
-        <span>${name.official} </span>
+      <li class="item commonContainer">
+      <img src="${flags.svg}" alt="${name.official}" class="flag" style="width: 50px; height:40px" />
+      <span>${name.official} </span>
      </li>`;
       })
       .join(' ');
@@ -54,11 +54,15 @@ const createContent = data => {
     console.log(data);
     const [{ name, capital, population, flags, languages }] = data;
     content = `
-    <img src="${flags.svg}" alt="${name.official}" style="width: 30px;" />
-        <span>${name.official}</span>
-        <p>Сapital: ${capital} </p>
-        <p>Population: ${population} </p>
-        <p>Languages: ${Object.values(languages).join(', ')}</p>`;
+      <div class="commonContainer"> 
+        <img src="${flags.svg}" alt="${
+      name.official
+    }" style="width: 50px; height:40px" />
+        <span class="single-titel">${name.official}</span>
+      </div>
+      <p><b>Сapital</b>: ${capital} </p>
+      <p><b>Population</b>: ${population} </p>
+      <p><b>Languages</b>: ${Object.values(languages).join(', ')}</p>`;
     renderContent(content, countryInfoRef);
   }
 };
